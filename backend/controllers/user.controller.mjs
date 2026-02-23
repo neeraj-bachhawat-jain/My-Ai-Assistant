@@ -82,13 +82,12 @@ export const talkToAssistant = async (req, res) => {
           userInput: gemResult.userInput,
           response: `Month is ${moment().format("MMMM")}`,
         });
-        case  'general':
+        case  'generals':
           return res.json({
             type,
             userInput: gemResult.userInput,
             response: gemResult.response,
         });
-        case  'google_search':
         case  'youtube_search':
         case  'youtube_play':
         case  'calculator_open':

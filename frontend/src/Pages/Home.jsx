@@ -21,18 +21,35 @@ export default function Home() {
     }
   }
  
+  const startRecognition = () =>{
+    try{
+      recognitionRef.current?.start();
+      setListening(true)
+    }catch (error){
+      if(!error.message.includes("start")){
+        console.error("Recognition error:", error);
+      }
+    }
+  }
+
   const speak = (text) =>{
     if(!synth){
       alert("Speech not supported in this browser");
       return;
     }
     const speech = new SpeechSynthesisUtterance(text);
+    speech.lang = 'hi-IN';
+    const voices = window.speechSynthesis.getVoices()
+    const hindiVoice = voices.find(v => v.lang === 'hi-IN');
+    if(hindiVoice){
+      speech.voice = hindiVoice;
+    }
     isSpeakingRef.current=true
     speech.onend = () =>{
       isSpeakingRef.current = false
-      recognitionRef.current?.start();
+      startRecognition()
     }
-    speech.lang = 'en-IN' || "en-US";
+    // speech.lang = 'en-IN' || "en-US";
     speech.rate = 1;
     speech.pitch = 1;
     speech.volume = 1;
@@ -50,9 +67,8 @@ export default function Home() {
     } else {
       speak("Sorry, the assistant returned no response.");
     }
-    if(type === 'google_search'){
-      const query = encodeURIComponent(userInput);
-      window.open(`https://www.google.com/search?q=${query}`, '_blank');
+    if(type === 'generals'){
+      console.log(response);
     }
     if(type === 'calculator_open'){
       window.open(`https://www.google.com/search?q=calculator`, '_blank');
@@ -143,7 +159,7 @@ export default function Home() {
         safeRecognition()
       }
     }, 10000)
-
+safeRecognition()
     return ()=>{
       recognition.stop()
       setListening(false)
@@ -154,23 +170,27 @@ export default function Home() {
   },[])
 
   return (
-    <div className='w-full h-screen bg-gradient-to-t from-black to-[#6262ba] flex justify-center items-center flex-col backdrop-blur-2xl'>
-      <div className='w-[300px] h-[400px] flex justify-center items-center overflow-hidden rounded-4xl'>
+    <div className='w-full h-screen bg-linear-to-t from-black to-[#6262ba] flex justify-center items-center flex-col backdrop-blur-2xl'>
+      <div className='w-75 h-100 flex justify-center items-center overflow-hidden rounded-4xl shadow-2xl'>
         <img src={userData?.assistantImage} alt='' className='h-full object-cover rounded-4xl' />
       </div>
-      <h1 className='text-white p-2 text-2xl font-semibold'>I'm <span className='text-pink-400'>{userData?.assistantName}</span></h1>
-      <button 
-          className="absolute bottom-3 right-25 p-2 text-white font-semibold rounded-full text-lg hover:border-2 hover:border-white transition-colors cursor-pointer" 
+      <h1 className='text-white p-4 text-2xl sm:text-3xl md:text-4xl font-semibold text-center mt-6'>
+        I'm <span className='text-pink-400'>{userData?.assistantName}</span>
+      </h1>
+      <div className='flex flex-col sm:flex-row gap-4 absolute bottom-6 right-4 sm:right-6 flex-wrap justify-end'>
+        <button 
+          className="px-4 py-2 text-white font-semibold rounded-full text-sm sm:text-base hover:border-2 hover:border-white transition-all duration-300 cursor-pointer bg-opacity-20 bg-blue-500 hover:bg-opacity-30" 
           onClick={()=>navigate('/customize')}
         >
-          Customize your assistant
+          Customize
         </button>
         <button 
-          className="absolute bottom-3 right-3 p-2 text-white font-semibold rounded-full text-lg hover:border-2 hover:border-white transition-colors cursor-pointer" 
+          className="px-4 py-2 text-white font-semibold rounded-full text-sm sm:text-base hover:border-2 hover:border-red-400 transition-all duration-300 cursor-pointer bg-opacity-20 bg-red-500 hover:bg-opacity-30" 
           onClick={()=>{handleLogout()}}
         >
-          logout
+          Logout
         </button>
+      </div>
     </div>
   )
 }

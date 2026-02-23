@@ -24,8 +24,7 @@ export const geminiResponse = async (command, assistantName, userName) => {
       ========================
 
       General:
-        - general
-        - google_search
+        - generals
         - youtube_search
         - youtube_play
 
