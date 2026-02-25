@@ -48,6 +48,8 @@ export const talkToAssistant = async (req, res) => {
       return res.status(400).json({ response: "Command is required" });
     }
     const user = await User.findById(req.userId);
+    user.history.push(command);
+    user.save();
     if (!user) {
       return res.status(404).json({ response: "User not found" });
     }
@@ -62,51 +64,72 @@ export const talkToAssistant = async (req, res) => {
         return res.json({
           type,
           userInput: gemResult.userInput,
-          response: `Current date is ${moment().format("YYYY-MM-DD")}`,
+          response: `${moment().format("YYYY-MM-DD")}`,
         });
       case "get_time":
         return res.json({
           type,
           userInput: gemResult.userInput,
-          response: `Current time is ${moment().format("hh:mm A")}`,
+          response: `${moment().format("hh:mm A")}`,
         });
       case "get_day":
         return res.json({
           type,
           userInput: gemResult.userInput,
-          response: `Today is ${moment().format("dddd")}`,
+          response: `${moment().format("dddd")}`,
         });
       case "get_month":
         return res.json({
           type,
           userInput: gemResult.userInput,
-          response: `Month is ${moment().format("MMMM")}`,
+          response: `${moment().format("MMMM")}`,
         });
-        case  'generals':
-          return res.json({
-            type,
-            userInput: gemResult.userInput,
-            response: gemResult.response,
-        });
-        case  'youtube_search':
-        case  'youtube_play':
-        case  'calculator_open':
-        case  'instagram_open':
-        case  'facebook_open':
-        case  'whatsapp_open':
-        case  'gmail_open':
-        case  'spotify_play':
-        case  'weather_show': 
+      case "generals":
         return res.json({
-            type,
-            userInput: gemResult.userInput,
-            response: gemResult.response,
+          type,
+          userInput: gemResult.userInput,
+          response: gemResult.response,
         });
-        default:
-            return res.status(400).json({response: "I didn't understand that command."})    
+      case "youtube_search":
+      case "youtube_play":
+      case "calculator_open":
+      case "instagram_open":
+      case "facebook_open":
+      case "whatsapp_open":
+      case "gmail_open":
+      case "spotify_play":
+      case "weather_show":
+        return res.json({
+          type,
+          userInput: gemResult.userInput,
+          response: gemResult.response,
+        });
+      default:
+        return res
+          .status(400)
+          .json({ response: "I didn't understand that command." });
     }
   } catch (error) {
     console.log("Talk to Assistant Error:", error.message);
-    return res.status(500).json({response: "Error communicating with assistant. Please try again."})
+    return res.status(500).json({
+      response: "Error communicating with assistant. Please try again.",
+    });
+  }
+};
+
+export const deleteHistory = async (req, res) => {
+  try {
+    const user = await User.findById(req.userId);
+    if (!user) {
+      return res.status(404).json({ response: "User not found" });
+    }
+    user.history = [];
+    await user.save();
+    return res.status(200).json({ response: "History cleared" });
+  } catch (error) {
+    console.log("Delete History Error:", error.message);
+    return res
+      .status(500)
+      .json({ response: "Error clearing history. Please try again." });
   }
 };

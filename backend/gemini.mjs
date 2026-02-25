@@ -89,21 +89,21 @@ export const geminiResponse = async (command, assistantName, userName) => {
 
         Now process this user input: ${command}
       `;
-      const ai = new GoogleGenAI({ apiKey: apiUrl });
+    const ai = new GoogleGenAI({ apiKey: apiUrl });
 
     const result = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
       contents: [
         {
           role: "user",
-          parts: [{ text: prompt }]
-        }
-      ]
+          parts: [{ text: prompt }],
+        },
+      ],
     });
-    
+
     const responseText = result.candidates[0].content.parts[0].text.trim();
-    console.log("Gemini Response:", responseText);
-    
+    // console.log("Gemini Response:", responseText);
+
     try {
       return JSON.parse(responseText);
     } catch (parseErr) {
