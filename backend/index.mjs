@@ -12,7 +12,7 @@ const app = express();
 app.use(
   cors({
     origin: [
-      "http://localhost:5173"
+      "http://localhost:5173",
       "https://my-ai-assistant-cm9g.onrender.com",
     ],
     credentials: true,
