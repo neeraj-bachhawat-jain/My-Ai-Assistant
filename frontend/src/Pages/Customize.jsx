@@ -4,11 +4,11 @@ import { IoArrowBackSharp } from "react-icons/io5";
 import { RiImageAddFill } from "react-icons/ri";
 import { userDataContext } from "../Context/UserContext";
 import { useNavigate } from "react-router-dom";
-import image1 from "../assets/image1.jpeg";
-import image2 from "../assets/image2.jpeg";
-import image3 from "../assets/image3.jpeg";
-import image4 from "../assets/image4.jpeg";
-import image5 from "../assets/image5.jpeg";
+import image1 from "../assets/Image1.jpeg";
+import image2 from "../assets/Image2.jpeg";
+import image3 from "../assets/Image3.jpeg";
+import image4 from "../assets/Image4.jpeg";
+import image5 from "../assets/Image5.jpeg";
 
 export default function Customize() {
   const navigate = useNavigate();
