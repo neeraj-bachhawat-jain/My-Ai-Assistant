@@ -11,7 +11,10 @@ import { geminiResponse } from "./gemini.mjs";
 const app = express();
 app.use(
   cors({
-    origin: "https://my-ai-assistant-cm9g.onrender.com",
+    origin: [
+      "http://localhost:5173"
+      "https://my-ai-assistant-cm9g.onrender.com",
+    ],
     credentials: true,
   })
 );
