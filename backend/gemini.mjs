@@ -3,7 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 
 export const geminiResponse = async (command, assistantName, userName) => {
   try {
-    const apiUrl = process.env.GEMINI_API_URL;
+    const apiKey = process.env.GEMINI_API_URL;
     const prompt = `
       You are a smart, friendly, voice-enabled virtual assistant named ${assistantName}, created by ${userName}.
 
@@ -113,6 +113,6 @@ export const geminiResponse = async (command, assistantName, userName) => {
     }
   } catch (err) {
     console.log("Gemini API Error:", err.message);
-    throw new Error("Failed to get response from Gemini API");
+    throw new Error("Failed to get response from Gemini API",);
   }
 };
