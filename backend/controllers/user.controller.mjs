@@ -111,8 +111,10 @@ export const talkToAssistant = async (req, res) => {
     }
   } catch (error) {
     console.log("Talk to Assistant Error:", error.message);
+    const clientMsg =
+      error.message || "Error communicating with assistant. Please try again.";
     return res.status(500).json({
-      response: "Error communicating with assistant. Please try again.",
+      response: clientMsg,
     });
   }
 };

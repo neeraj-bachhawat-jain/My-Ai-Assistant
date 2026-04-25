@@ -3,7 +3,7 @@ import { GoogleGenAI } from "@google/genai";
 
 export const geminiResponse = async (command, assistantName, userName) => {
   try {
-    const apiUrl = process.env.GEMINI_API_URL;
+    const apiKey = process.env.GEMINI_API_KEY;
     const prompt = `
       You are a smart, friendly, voice-enabled virtual assistant named ${assistantName}, created by ${userName}.
 
@@ -42,10 +42,6 @@ export const geminiResponse = async (command, assistantName, userName) => {
         - get_date
         - get_day
         - get_month
-        - open_camera
-        - open_settings
-        - increase_volume
-        - decrease_volume
 
         ========================
           INTENT RULES
@@ -89,7 +85,7 @@ export const geminiResponse = async (command, assistantName, userName) => {
 
         Now process this user input: ${command}
       `;
-    const ai = new GoogleGenAI({ apiKey: apiUrl });
+    const ai = new GoogleGenAI({ apiKey });
 
     const result = await ai.models.generateContent({
       model: "gemini-3-flash-preview",
@@ -117,6 +113,6 @@ export const geminiResponse = async (command, assistantName, userName) => {
     }
   } catch (err) {
     console.log("Gemini API Error:", err.message);
-    throw new Error("Failed to get response from Gemini API");
+    throw new Error(`Failed to get response from Gemini API: ${err.message}`);
   }
 };

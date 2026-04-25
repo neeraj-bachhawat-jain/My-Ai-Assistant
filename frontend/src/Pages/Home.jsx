@@ -9,6 +9,7 @@ export default function Home() {
   const navigate = useNavigate();
   const { userData, serverUrl, setUserData, getGeminiResponse } =
     useContext(userDataContext);
+  const [showHistory, setShowHistory] = useState(false);
   const [listening, setListening] = useState(false);
   const [userText, setUserText] = useState("");
   const [aiText, setAiText] = useState("");
@@ -16,16 +17,6 @@ export default function Home() {
   const recognitionRef = useRef(null);
   const isRecognizingRef = useRef(false);
   const synth = window.speechSynthesis;
-
-  // Modal state for history
-  const [showHistory, setShowHistory] = useState(false);
-  // Replace this with actual history data from backend or context
-  // const [history, setHistory] = useState([
-  //   { user: "What is the weather today?", ai: "The weather today is sunny with a high of 25°C." },
-  //   { user: "Open calculator", ai: "Opening calculator." },
-  //   { user: "Play music on YouTube", ai: "Searching YouTube for music." }
-  // ]);
-
   const handleLogout = async () => {
     try {
       const result = await axios.get(`${serverUrl}/api/auth/logout`, {
@@ -102,6 +93,16 @@ export default function Home() {
     }
     if (type === "facebook_open") {
       window.open(`https://www.facebook.com/`, "_blank");
+    }
+    if (type === "whatsapp_open") {
+      window.open(`https://www.whatsapp.com/`, "_blank");
+      startRecognition();
+    }
+    if (type === "gmail_open") {
+      window.open(`https://www.gmail.com/`, "_blank");
+    }
+    if (type === "spotify_play") {
+      window.open(`https://www.spotify.com/`, "_blank");
     }
     if (type === "weather_show") {
       window.open(`https://www.google.com/search?q=weather`, "_blank");

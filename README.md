@@ -81,7 +81,7 @@ The frontend is built with React and Vite, providing an interactive user interfa
    npm install
    ```
 
-3. Create a `.env` file with required environment variables
+3. Create a `.env` file with required environment variables (e.g. `PORT`, database URL, **`GEMINI_API_KEY`** for the Gemini AI service)
 
 4. Start the backend server:
    ```bash
